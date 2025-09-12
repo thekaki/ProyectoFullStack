@@ -1,0 +1,22 @@
+{
+	"name": "SB Admin2 - Dev Container (Node 14)",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".."
+	},
+	"forwardPorts": [
+		3000
+	],
+	"mounts": [
+		"source=${localWorkspaceFolderBasename}-node-modules,target=/workspace/node_modules,type=volume"
+	],
+	"postCreateCommand": "if [ -f package-lock.json ]; then npm ci --legacy-peer-deps; else npm install --legacy-peer-deps; fi",
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+	"extensions": [
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode"
+	],
+	"remoteUser": "node"
+}

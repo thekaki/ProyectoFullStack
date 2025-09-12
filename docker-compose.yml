@@ -1,0 +1,38 @@
+services:
+  db:
+    image: mysql:8.3.0
+    container_name: mysql_practicasSpring
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cursoSpring
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mysql_network
+    restart: always
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin_practicasSpring
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    networks:
+      - mysql_network
+    restart: always
+
+networks:
+  mysql_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
