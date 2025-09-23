@@ -16,6 +16,13 @@ public class Articulo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
+    @Column(length = 500)
     private String descripcion;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String contenido;
+
+    @Column(length = 2083)
+    private String imagen;
 }
