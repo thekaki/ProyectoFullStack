@@ -1,15 +1,12 @@
 package com.scabrera.cursospring.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Data
-@AllArgsConstructor
-public class TokenResponseDTO {
+public record TokenResponseDTO (
 
-    private String accessToken;
-    private String refreshToken;
-    private String tokenType;
-    private Long expiresIn;
-
+    @JsonProperty("access_token")
+    String accessToken,
+    @JsonProperty("refresh_token")
+    String refreshToken
+) {
 }

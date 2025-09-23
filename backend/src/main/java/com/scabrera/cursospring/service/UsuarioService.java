@@ -27,6 +27,11 @@ public class UsuarioService {
                 .orElseThrow(() -> new RuntimeException("Usuario no Encontrado"));
     }
 
+    public Usuario buscarUsuarioByEmail(String email){
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no Encontrado con email: " + email));
+    }
+
     public void eliminarUsuario(Long id) {
         usuarioRepository.deleteById(id);
     }

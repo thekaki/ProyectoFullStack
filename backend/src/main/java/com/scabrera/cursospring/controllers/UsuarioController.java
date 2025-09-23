@@ -6,6 +6,7 @@ import com.scabrera.cursospring.mapper.UsuarioMapper;
 import com.scabrera.cursospring.models.Usuario;
 import com.scabrera.cursospring.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,5 +55,13 @@ public class UsuarioController {
     @DeleteMapping("/usuario/{id}")
     public void eliminarUsuario(@PathVariable Long id){
         usuarioService.eliminarUsuario(id);
+    }
+
+    @GetMapping("/me")
+    public UsuarioResponseDTO me(Authentication authentication) {
+        String email = authentication.getName(); // viene del JWT
+        Usuario usuario = usuarioService.buscarUsuarioByEmail(email);
+
+        return usuarioMapper.toDTO(usuario);
     }
 }
