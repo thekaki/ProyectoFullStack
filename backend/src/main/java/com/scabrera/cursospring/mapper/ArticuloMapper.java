@@ -6,9 +6,11 @@ import com.scabrera.cursospring.dto.ArticuloRequestDTO;
 import com.scabrera.cursospring.models.Articulo;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface ArticuloMapper {
-    ArticuloListResponseDTO toListDTO(Articulo articulo);
+    List<ArticuloListResponseDTO> toListDTO(List<Articulo> listaArticulos);
     ArticuloDetailResponseDTO toDetailDTO(Articulo articulo);
     Articulo toEntity(ArticuloRequestDTO articuloRequestDTO);
 }
