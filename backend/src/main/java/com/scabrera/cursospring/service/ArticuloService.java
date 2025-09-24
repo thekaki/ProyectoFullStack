@@ -24,4 +24,8 @@ public class ArticuloService {
         return articuloRepo.findById(id)
             .orElseThrow(() -> new RuntimeException("Articulo no Encontrado"));
     }
+
+    public Articulo crearArticulo(Articulo articulo) {
+        return articuloRepo.save(articulo);
+    }
 }

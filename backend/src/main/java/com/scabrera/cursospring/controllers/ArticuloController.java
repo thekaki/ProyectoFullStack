@@ -1,15 +1,16 @@
 package com.scabrera.cursospring.controllers;
 
+import com.scabrera.cursospring.dto.ApiResponseDTO;
 import com.scabrera.cursospring.dto.ArticuloDetailResponseDTO;
 import com.scabrera.cursospring.dto.ArticuloListResponseDTO;
+import com.scabrera.cursospring.dto.ArticuloRequestDTO;
 import com.scabrera.cursospring.mapper.ArticuloMapper;
 import com.scabrera.cursospring.models.Articulo;
 import com.scabrera.cursospring.service.ArticuloService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,6 +35,19 @@ public class ArticuloController {
     public ArticuloDetailResponseDTO traerArticulos(@PathVariable Long id) {
         Articulo articulo = articuloService.buscarId(id);
         return articuloMapper.toDetailDTO(articulo);
+    }
+
+    @PostMapping("/articulo")
+    public ResponseEntity<ApiResponseDTO<ArticuloDetailResponseDTO>> crearArticulo(@Valid @RequestBody ArticuloRequestDTO articuloRequestDTO){
+        Articulo articulo = articuloMapper.toEntity(articuloRequestDTO);
+        Articulo articuloCreado = articuloService.crearArticulo(articulo);
+        ArticuloDetailResponseDTO respuesta = articuloMapper.toDetailDTO(articuloCreado);
+
+        ApiResponseDTO<ArticuloDetailResponseDTO> apiResponse =
+                new ApiResponseDTO<>(respuesta, "Artículo creado con éxito");
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+
     }
 
 }
