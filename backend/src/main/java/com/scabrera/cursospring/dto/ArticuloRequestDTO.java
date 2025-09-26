@@ -1,5 +1,6 @@
 package com.scabrera.cursospring.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ArticuloRequestDTO {
-    private Long id;
+    @NotBlank(message = "El título es obligatorio")
     private String titulo;
     private String descripcion;
     private String contenido;
