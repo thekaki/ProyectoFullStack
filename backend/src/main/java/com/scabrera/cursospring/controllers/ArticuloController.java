@@ -15,29 +15,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/articulos")
 public class ArticuloController {
 
-    private ArticuloService articuloService;
-    private ArticuloMapper articuloMapper;
+    private final ArticuloService articuloService;
+    private final ArticuloMapper articuloMapper;
 
     public ArticuloController(ArticuloService articuloService, ArticuloMapper articuloMapper) {
         this.articuloService = articuloService;
         this.articuloMapper = articuloMapper;
     }
 
-    @GetMapping("/articulos")
-    public List<ArticuloListResponseDTO> traerArticulos() {
-        return articuloService.traerArticulos();
+    @GetMapping()
+    public ResponseEntity<ApiResponseDTO<List<ArticuloListResponseDTO>>> traerArticulos() {
+       List<ArticuloListResponseDTO> listaArticulos = articuloService.traerArticulos();
+       return ResponseEntity.ok(ApiResponseDTO.success(listaArticulos, "Artículos econtrados con exito"));
     }
 
-    @GetMapping("/articulo/{id}")
-    public ArticuloDetailResponseDTO traerArticulos(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponseDTO<ArticuloDetailResponseDTO>> buscarArticulo(@PathVariable Long id) {
         Articulo articulo = articuloService.buscarId(id);
-        return articuloMapper.toDetailDTO(articulo);
+        ArticuloDetailResponseDTO respuesta = articuloMapper.toDetailDTO(articulo);
+        ApiResponseDTO<ArticuloDetailResponseDTO> apiResponse = new ApiResponseDTO<>(respuesta, "Articulo encontrado con exito");
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
-    @PostMapping("/articulo")
+    @GetMapping("/buscar")
+    public ResponseEntity<ApiResponseDTO<List<ArticuloListResponseDTO>>> buscarPorTitulo(@RequestParam String titulo) {
+        List<ArticuloListResponseDTO> listaArticulos = articuloService.buscarPorNombre(titulo);
+        return ResponseEntity.ok(ApiResponseDTO.success(listaArticulos, "Articulos econtrados con éxito"));
+    }
+
+    @PostMapping()
     public ResponseEntity<ApiResponseDTO<ArticuloDetailResponseDTO>> crearArticulo(@Valid @RequestBody ArticuloRequestDTO articuloRequestDTO){
         Articulo articulo = articuloMapper.toEntity(articuloRequestDTO);
         Articulo articuloCreado = articuloService.crearArticulo(articulo);
@@ -48,6 +57,13 @@ public class ArticuloController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
 
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponseDTO<ArticuloDetailResponseDTO>> eliminarArticulo(@PathVariable Long id) {
+        Articulo articuloEliminado = articuloService.eliminarArticulo(id);
+        ArticuloDetailResponseDTO articuloEliniadoDTO = articuloMapper.toDetailDTO(articuloEliminado);
+        return ResponseEntity.ok(ApiResponseDTO.success(articuloEliniadoDTO, "Articulo eliminado con exito"));
     }
 
 }

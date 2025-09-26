@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class ArticuloService {
 
-    private ArticuloRepository articuloRepo;
+    private final ArticuloRepository articuloRepo;
 
     public ArticuloService(ArticuloRepository articuloRepo) {
         this.articuloRepo = articuloRepo;
@@ -22,10 +22,20 @@ public class ArticuloService {
 
     public Articulo buscarId(Long id) {
         return articuloRepo.findById(id)
-            .orElseThrow(() -> new RuntimeException("Articulo no Encontrado"));
+            .orElseThrow(() -> new RuntimeException("Artículo no Encontrado"));
     }
 
     public Articulo crearArticulo(Articulo articulo) {
         return articuloRepo.save(articulo);
+    }
+
+    public Articulo eliminarArticulo(Long id) {
+        Articulo articulo = buscarId(id);
+        articuloRepo.deleteById(id);
+        return articulo;
+    }
+
+    public List<ArticuloListResponseDTO> buscarPorNombre(String titulo) {
+        return articuloRepo.findAllByTitulo(titulo);
     }
 }

@@ -15,4 +15,8 @@ public interface ArticuloRepository extends JpaRepository<Articulo, Long> {
             "FROM Articulo a")
     List<ArticuloListResponseDTO> findAllWithoutContenido();
 
+    @Query("SELECT new com.scabrera.cursospring.dto.ArticuloListResponseDTO(a.id, a.titulo, a.descripcion, a.imagen) " +
+            "FROM Articulo a WHERE LOWER(a.titulo) LIKE LOWER(CONCAT('%', :titulo, '%'))")
+    List<ArticuloListResponseDTO> findAllByTitulo(String titulo);
+
 }
