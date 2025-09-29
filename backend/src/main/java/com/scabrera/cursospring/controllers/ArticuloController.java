@@ -8,7 +8,6 @@ import com.scabrera.cursospring.mapper.ArticuloMapper;
 import com.scabrera.cursospring.models.Articulo;
 import com.scabrera.cursospring.service.ArticuloService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

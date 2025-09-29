@@ -32,12 +32,14 @@ public class JwtService {
 
     private String buildToken(final Usuario usuario, final long expiration) {
         return Jwts.builder()
-                .setId(usuario.getId().toString())
-                .setClaims(Map.of("name", usuario.getNombre()))
                 .setSubject(usuario.getEmail())
+                .setClaims(Map.of(
+                        "id", usuario.getId(),
+                        "name", usuario.getNombre()
+                ))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey()) // correcto
+                .signWith(getSignInKey())
                 .compact();
     }
 
