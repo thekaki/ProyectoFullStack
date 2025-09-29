@@ -25,4 +25,7 @@ public class Usuario {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Token> tokens;
+
+    @OneToMany(mappedBy = "propietario", fetch = FetchType.LAZY)
+    private List<Articulo> articulos;
 }
