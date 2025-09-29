@@ -1,4 +1,4 @@
-package com.scabrera.cursospring.config;
+package com.scabrera.cursospring.security;
 
 import com.scabrera.cursospring.models.Token;
 import com.scabrera.cursospring.models.Usuario;

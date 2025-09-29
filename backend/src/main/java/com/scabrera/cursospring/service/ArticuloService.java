@@ -4,6 +4,7 @@ import com.scabrera.cursospring.dto.ArticuloListResponseDTO;
 import com.scabrera.cursospring.models.Articulo;
 import com.scabrera.cursospring.models.Usuario;
 import com.scabrera.cursospring.repository.ArticuloRepository;
+import com.scabrera.cursospring.security.CurrentUserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +14,12 @@ public class ArticuloService {
 
     private final ArticuloRepository articuloRepo;
     private final UsuarioService usuarioService;
+    private final CurrentUserService currentUserService;
 
-    public ArticuloService(ArticuloRepository articuloRepo, UsuarioService usuarioService) {
+    public ArticuloService(ArticuloRepository articuloRepo, UsuarioService usuarioService, CurrentUserService currentUserService) {
         this.articuloRepo = articuloRepo;
         this.usuarioService = usuarioService;
+        this.currentUserService = currentUserService;
     }
 
     public List<ArticuloListResponseDTO> traerArticulos() {
@@ -34,6 +37,12 @@ public class ArticuloService {
 
     public Articulo eliminarArticulo(Long id) {
         Articulo articulo = buscarId(id);
+        Long currentUserId = currentUserService.getCurrentUserId();
+
+        if (!articulo.getPropietario().getId().equals(currentUserId)) {
+            throw new RuntimeException("No eres el propietario de este artículo");
+        }
+
         articuloRepo.deleteById(id);
         return articulo;
     }

@@ -59,7 +59,7 @@ public class UsuarioController {
         return ResponseEntity.ok(ApiResponseDTO.success(listaArticulos, "Artículos encontrados con éxito"));
     }
 
-    @GetMapping("/me")
+    @GetMapping("usuarios/me")
     public UsuarioResponseDTO me(Authentication authentication) {
         String email = authentication.getName();
         return usuarioService.buscarUsuarioByEmailDTO(email);
