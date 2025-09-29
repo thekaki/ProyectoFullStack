@@ -25,4 +25,8 @@ public class Articulo {
 
     @Column(length = 2083)
     private String imagen;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Usuario propietario;
 }

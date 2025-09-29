@@ -1,52 +1,62 @@
 package com.scabrera.cursospring.service;
 
+import com.scabrera.cursospring.dto.UsuarioRequestDTO;
+import com.scabrera.cursospring.dto.UsuarioResponseDTO;
+import com.scabrera.cursospring.mapper.UsuarioMapper;
 import com.scabrera.cursospring.models.Usuario;
 import com.scabrera.cursospring.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final UsuarioMapper usuarioMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.usuarioMapper = usuarioMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<Usuario> traerUsuarios(){
-        return usuarioRepository.findAll();
+    // ======= Métodos para Controller (devuelven DTO) =======
+
+    public List<UsuarioResponseDTO> traerUsuariosDTO(){
+        return usuarioRepository.findAll()
+                .stream()
+                .map(usuarioMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public Usuario buscarUsuario(Long id){
+    public UsuarioResponseDTO buscarUsuarioDTO(Long id){
         return usuarioRepository.findById(id)
+                .map(usuarioMapper::toDTO)
                 .orElseThrow(() -> new RuntimeException("Usuario no Encontrado"));
     }
 
-    public Usuario buscarUsuarioByEmail(String email){
+    public UsuarioResponseDTO buscarUsuarioByEmailDTO(String email){
         return usuarioRepository.findByEmail(email)
+                .map(usuarioMapper::toDTO)
                 .orElseThrow(() -> new RuntimeException("Usuario no Encontrado con email: " + email));
     }
 
-    public void eliminarUsuario(Long id) {
-        usuarioRepository.deleteById(id);
+    public UsuarioResponseDTO crearUsuario(UsuarioRequestDTO user) {
+        usuarioRepository.findByEmail(user.getEmail())
+                .ifPresent(u -> { throw new RuntimeException("El email ya está registrado"); });
+
+        Usuario nuevo = usuarioMapper.toEntity(user);
+        nuevo.setPassword(passwordEncoder.encode(user.getPassword()));
+        Usuario guardado = usuarioRepository.save(nuevo);
+        return usuarioMapper.toDTO(guardado);
     }
 
-    public Usuario crearUsuario(Usuario user) {
-        if (usuarioRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new RuntimeException("El email ya está registrado");
-        }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        return usuarioRepository.save(user);
-    }
-
-    public Usuario editarUsuario(Long id, Usuario user) {
-        Usuario existente = buscarUsuario(id);
+    public UsuarioResponseDTO editarUsuario(Long id, UsuarioRequestDTO user) {
+        Usuario existente = buscarUsuarioEntity(id);
         existente.setNombre(user.getNombre());
         existente.setApellido(user.getApellido());
         existente.setEmail(user.getEmail());
@@ -54,6 +64,18 @@ public class UsuarioService {
         if (user.getPassword() != null) {
             existente.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        return usuarioRepository.save(existente);
+        Usuario guardado = usuarioRepository.save(existente);
+        return usuarioMapper.toDTO(guardado);
+    }
+
+    // ======= Métodos internos (devuelven entidades) =======
+
+    public Usuario buscarUsuarioEntity(Long id){
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no Encontrado"));
+    }
+
+    public void eliminarUsuario(Long id) {
+        usuarioRepository.deleteById(id);
     }
 }
