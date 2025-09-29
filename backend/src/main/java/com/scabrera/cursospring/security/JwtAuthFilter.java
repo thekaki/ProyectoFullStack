@@ -4,7 +4,7 @@ import com.scabrera.cursospring.models.Token;
 import com.scabrera.cursospring.models.Usuario;
 import com.scabrera.cursospring.repository.TokenRepository;
 import com.scabrera.cursospring.repository.UsuarioRepository;
-import com.scabrera.cursospring.service.JwtService;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,13 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Optional;
 
 @Slf4j
@@ -59,8 +59,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         final String jwtToken = authHeader.substring(7);
         final String userEmail;
+        final Claims claims;
+
         try {
-            userEmail = jwtService.extractUsername(jwtToken);
+            claims = jwtService.extractAllClaims(jwtToken);
+            userEmail = claims.getSubject();
         } catch (Exception e) {
             log.error("JwtAuthFilter - Error parsing token: {}", e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -80,31 +83,38 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        final UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-        final Optional<Usuario> user = usuarioRepository.findByEmail(userDetails.getUsername());
-        if (user.isEmpty()) {
+        final Optional<Usuario> userOpt = usuarioRepository.findByEmail(userEmail);
+        if (userOpt.isEmpty()) {
             log.warn("JwtAuthFilter - Usuario no encontrado en DB");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
-        final boolean isTokenValid = jwtService.isTokenValid(jwtToken, user.get());
+        final Usuario user = userOpt.get();
+        final boolean isTokenValid = jwtService.isTokenValid(jwtToken, user);
         if (!isTokenValid) {
             log.warn("JwtAuthFilter - Token inválido para el usuario");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
-        // Configurar autenticación en Spring Security
+        Long userId = claims.get("id", Long.class);
+        CustomUserDetails customUserDetails = new CustomUserDetails(
+                userId,
+                user.getEmail(),
+                user.getPassword(),
+                Collections.emptyList()
+        );
+
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                userDetails,
+                customUserDetails,
                 null,
-                userDetails.getAuthorities()
+                customUserDetails.getAuthorities()
         );
         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
-        log.info("JwtAuthFilter - Usuario {} autenticado correctamente", userEmail);
+        log.info("JwtAuthFilter - Usuario {} (ID: {}) autenticado correctamente", userEmail, userId);
         filterChain.doFilter(request, response);
     }
 }

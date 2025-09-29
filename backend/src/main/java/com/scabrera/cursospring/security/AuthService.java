@@ -1,4 +1,4 @@
-package com.scabrera.cursospring.service;
+package com.scabrera.cursospring.security;
 
 import com.scabrera.cursospring.dto.LoginRequestDTO;
 import com.scabrera.cursospring.dto.RegisterRequestDTO;
