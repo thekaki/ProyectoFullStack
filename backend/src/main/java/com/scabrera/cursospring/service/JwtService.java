@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class JwtService {
@@ -32,11 +33,10 @@ public class JwtService {
 
     private String buildToken(final Usuario usuario, final long expiration) {
         return Jwts.builder()
-                .setSubject(usuario.getEmail())
-                .setClaims(Map.of(
-                        "id", usuario.getId(),
-                        "name", usuario.getNombre()
-                ))
+                .setId(UUID.randomUUID().toString())       // ID del token
+                .setSubject(usuario.getEmail())            // Email como subject
+                .claim("id", usuario.getId())              // ID de usuario
+                .claim("name", usuario.getNombre())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey())

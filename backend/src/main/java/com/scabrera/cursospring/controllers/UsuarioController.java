@@ -2,7 +2,7 @@ package com.scabrera.cursospring.controllers;
 
 import com.scabrera.cursospring.dto.ApiResponseDTO;
 import com.scabrera.cursospring.dto.ArticuloListResponseDTO;
-import com.scabrera.cursospring.dto.UsuarioCreateDTO;
+import com.scabrera.cursospring.dto.UsuarioRequestDTO;
 import com.scabrera.cursospring.dto.UsuarioResponseDTO;
 import com.scabrera.cursospring.mapper.UsuarioMapper;
 import com.scabrera.cursospring.models.Usuario;
@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -31,33 +30,22 @@ public class UsuarioController {
 
     @GetMapping("/usuarios")
     public List<UsuarioResponseDTO> traerUsuarios(){
-        return usuarioService.traerUsuarios()
-                .stream()
-                .map(usuarioMapper::toDTO)
-                .collect(Collectors.toList());
+        return usuarioService.traerUsuariosDTO();
     }
 
     @GetMapping("/usuarios/{id}")
     public UsuarioResponseDTO buscarUsuario(@PathVariable Long id){
-        Usuario usuario = usuarioService.buscarUsuario(id);
-        return usuarioMapper.toDTO(usuario);
+        return usuarioService.buscarUsuarioDTO(id);
     }
 
     @PostMapping("/usuarios")
-    public UsuarioResponseDTO crearUsuario(@RequestBody UsuarioCreateDTO userCreateDTO){
-        System.out.println(userCreateDTO);
-        Usuario usuario = usuarioMapper.toEntity(userCreateDTO);
-
-        Usuario actualizado = usuarioService.crearUsuario(usuario);
-
-        return usuarioMapper.toDTO(actualizado);
+    public UsuarioResponseDTO crearUsuario(@RequestBody UsuarioRequestDTO user){
+        return usuarioService.crearUsuario(user);
     }
 
     @PutMapping("/usuarios/{id}")
-    public UsuarioResponseDTO editarUsuario(@PathVariable Long id, @RequestBody UsuarioCreateDTO userCreateDTO){
-        Usuario usuario = usuarioMapper.toEntity(userCreateDTO);
-        Usuario actualizado = usuarioService.editarUsuario(id, usuario);
-        return usuarioMapper.toDTO(actualizado);
+    public UsuarioResponseDTO editarUsuario(@PathVariable Long id, @RequestBody UsuarioRequestDTO user){
+        return usuarioService.editarUsuario(id, user);
     }
 
     @DeleteMapping("/usuarios/{id}")
@@ -73,9 +61,7 @@ public class UsuarioController {
 
     @GetMapping("/me")
     public UsuarioResponseDTO me(Authentication authentication) {
-        String email = authentication.getName(); // viene del JWT
-        Usuario usuario = usuarioService.buscarUsuarioByEmail(email);
-
-        return usuarioMapper.toDTO(usuario);
+        String email = authentication.getName();
+        return usuarioService.buscarUsuarioByEmailDTO(email);
     }
 }

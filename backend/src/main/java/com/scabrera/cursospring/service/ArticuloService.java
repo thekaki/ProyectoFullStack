@@ -43,7 +43,7 @@ public class ArticuloService {
     }
 
     public List<ArticuloListResponseDTO> buscarArticulosPorPropietario(Long id) {
-        Usuario usuario = usuarioService.buscarUsuario(id);
+        Usuario usuario = usuarioService.buscarUsuarioEntity(id);
         return articuloRepo.findAllByPropietario(id);
     }
 }
