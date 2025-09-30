@@ -18,15 +18,28 @@ public class AuthorizationService {
         this.usuarioService = usuarioService;
     }
 
-    public void checkOwnershipOrPermission(Long ownerId, Permiso permiso) {
+    public void checkOwnershipOrPermission(Long ownerId, List<Permiso> listaPermiso) {
         Long currentUserId = currentUserService.getCurrentUserId();
         Usuario user = usuarioService.buscarUsuarioEntity(currentUserId);
 
         boolean tienePermiso = user.getRoles().stream()
                 .flatMap(rol -> rol.getPermisos().stream())
-                .anyMatch(p -> p.equals(permiso));
+                .anyMatch(listaPermiso::contains);
 
         if (!ownerId.equals(currentUserId) && !tienePermiso) {
+            throw new RuntimeException("No tienes permisos para este recurso");
+        }
+    }
+
+    public void checkPermission(List<Permiso> listaPermiso) {
+        Long currentUserId = currentUserService.getCurrentUserId();
+        Usuario user = usuarioService.buscarUsuarioEntity(currentUserId);
+
+        boolean tienePermiso = user.getRoles().stream()
+                .flatMap(rol -> rol.getPermisos().stream())
+                .anyMatch(listaPermiso::contains);
+
+        if (!tienePermiso) {
             throw new RuntimeException("No tienes permisos para este recurso");
         }
     }

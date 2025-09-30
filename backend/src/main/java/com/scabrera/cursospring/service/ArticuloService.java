@@ -40,15 +40,19 @@ public class ArticuloService {
     public Articulo crearArticulo(Articulo articulo) {
         Long currentUserId = currentUserService.getCurrentUserId();
         Usuario user = usuarioService.buscarUsuarioEntity(currentUserId);
+
+        List<Permiso> listaPermiso = permisoService.buscarPermisoPorNombreEntidad("ARTICULO_CREATE");
+        authorizationService.checkOwnershipOrPermission(currentUserId, listaPermiso);
+
         articulo.setPropietario(user);
         return articuloRepo.save(articulo);
     }
 
     public Articulo eliminarArticulo(Long id) {
         Articulo articulo = buscarId(id);
-        Permiso permiso = permisoService.buscarPermisoPorNombreEntidad("ARTICULO_DELETE");
+        List<Permiso> listaPermiso = permisoService.buscarPermisoPorNombreEntidad("ARTICULO_DELETE");
 
-        authorizationService.checkOwnershipOrPermission(articulo.getPropietario().getId(), permiso);
+        authorizationService.checkOwnershipOrPermission(articulo.getPropietario().getId(), listaPermiso);
 
         articuloRepo.deleteById(id);
         return articulo;

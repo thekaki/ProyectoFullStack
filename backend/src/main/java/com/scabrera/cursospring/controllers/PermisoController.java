@@ -3,10 +3,9 @@ package com.scabrera.cursospring.controllers;
 import com.scabrera.cursospring.dto.ApiResponseDTO;
 import com.scabrera.cursospring.dto.PermisoDTO;
 import com.scabrera.cursospring.service.PermisoService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +23,10 @@ public class PermisoController {
     public ResponseEntity<ApiResponseDTO<List<PermisoDTO>>> traerPermisos() {
         List<PermisoDTO> listaPermisos = permisoService.traerPermisosDTO();
         return ResponseEntity.ok(ApiResponseDTO.success(listaPermisos, "Permisos listados con éxito"));
+    }
+
+    @PostMapping("permisos")
+    public ResponseEntity<ApiResponseDTO<PermisoDTO>> crearPermiso(@Valid @RequestBody PermisoDTO permisoRequest) {
+        return permisoService.crearPermisoDTO(permisoRequest);
     }
 }
