@@ -7,6 +7,7 @@ import com.scabrera.cursospring.models.Usuario;
 import com.scabrera.cursospring.repository.ArticuloRepository;
 import com.scabrera.cursospring.security.AuthorizationService;
 import com.scabrera.cursospring.security.CurrentUserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,12 +49,9 @@ public class ArticuloService {
         return articuloRepo.save(articulo);
     }
 
+    @PreAuthorize("hasPermission(#id, 'Articulo', 'ARTICULO_DELETE')")
     public Articulo eliminarArticulo(Long id) {
         Articulo articulo = buscarId(id);
-        List<Permiso> listaPermiso = permisoService.buscarPermisoPorNombreEntidad("ARTICULO_DELETE");
-
-        authorizationService.checkOwnershipOrPermission(articulo.getPropietario().getId(), listaPermiso);
-
         articuloRepo.deleteById(id);
         return articulo;
     }

@@ -1,5 +1,6 @@
 package com.scabrera.cursospring.models;
 
+import com.scabrera.cursospring.security.Ownable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Articulo {
+public class Articulo implements Ownable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +30,9 @@ public class Articulo {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Usuario propietario;
+
+    @Override
+    public Long getOwnerId() {
+        return propietario != null ? propietario.getId() : null;
+    }
 }
