@@ -59,6 +59,18 @@ public class UsuarioController {
         return ResponseEntity.ok(ApiResponseDTO.success(listaArticulos, "Artículos encontrados con éxito"));
     }
 
+//    @GetMapping("/{id}")
+//    @PreAuthorize("hasRole('ADMIN') or #id == principal.id")  // ejemplo de seguridad
+//    public UsuarioConPermisosDTO getUsuarioConPermisos(@PathVariable Long id) {
+//        return usuarioService.obtenerUsuarioConPermisos(id);
+//    }
+//
+//    @GetMapping("/me")
+//    public UsuarioConPermisosDTO getMiUsuarioConPermisos(Authentication auth) {
+//        Long myId = // obtener id del usuario autenticado desde auth / contexto
+//        return usuarioService.obtenerUsuarioConPermisos(myId);
+//    }
+
     @GetMapping("usuarios/me")
     public UsuarioResponseDTO me(Authentication authentication) {
         String email = authentication.getName();

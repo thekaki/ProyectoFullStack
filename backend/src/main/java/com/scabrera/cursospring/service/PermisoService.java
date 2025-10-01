@@ -8,6 +8,7 @@ import com.scabrera.cursospring.repository.PermisoRepository;
 import com.scabrera.cursospring.security.AuthorizationService;
 import com.scabrera.cursospring.security.CurrentUserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -47,12 +48,11 @@ public class PermisoService {
         return ResponseEntity.ok(ApiResponseDTO.success(respuesta, "Permiso creado con éxito"));
     }
 
+    @PreAuthorize("hasPermission(null, 'Permiso', 'PERMISO_CREATE')")
     public ResponseEntity<ApiResponseDTO<PermisoDTO>> crearPermisoDTO(PermisoDTO permisoDTO) {
         Permiso permiso = permisoMapper.toEntity(permisoDTO);
-        List<Permiso> listaPermisosBBDD = buscarPermisoPorNombreEntidad("PERMISO_CREATE");
-        authorizationService.checkPermission(listaPermisosBBDD);
-
         Permiso guardado = permisoRepository.save(permiso);
+
         PermisoDTO respuesta = permisoMapper.toDTO(guardado);
 
         return ResponseEntity.ok(ApiResponseDTO.success(respuesta, "Permiso creado con éxito"));

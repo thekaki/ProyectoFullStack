@@ -2,7 +2,6 @@ package com.scabrera.cursospring.service;
 
 import com.scabrera.cursospring.dto.ArticuloListResponseDTO;
 import com.scabrera.cursospring.models.Articulo;
-import com.scabrera.cursospring.models.Permiso;
 import com.scabrera.cursospring.models.Usuario;
 import com.scabrera.cursospring.repository.ArticuloRepository;
 import com.scabrera.cursospring.security.AuthorizationService;
@@ -41,9 +40,6 @@ public class ArticuloService {
     public Articulo crearArticulo(Articulo articulo) {
         Long currentUserId = currentUserService.getCurrentUserId();
         Usuario user = usuarioService.buscarUsuarioEntity(currentUserId);
-
-        List<Permiso> listaPermiso = permisoService.buscarPermisoPorNombreEntidad("ARTICULO_CREATE");
-        authorizationService.checkOwnershipOrPermission(currentUserId, listaPermiso);
 
         articulo.setPropietario(user);
         return articuloRepo.save(articulo);
