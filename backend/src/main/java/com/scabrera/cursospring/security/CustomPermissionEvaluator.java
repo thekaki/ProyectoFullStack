@@ -16,15 +16,24 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     }
 
     @Override
-    public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
-        String permisoName = (permission instanceof String) ? (String) permission : null;
+    public boolean hasPermission(Authentication authentication,
+                                 Object targetDomainObject,
+                                 Object permission) {
+        if (permission == null) return false;
+        String permisoName = permission.toString();
         String targetType = (targetDomainObject != null) ? targetDomainObject.getClass().getSimpleName() : null;
-        return authorizationService.hasPermission(authentication, targetDomainObject, targetType, permisoName);
+
+        return authorizationService.hasPermissionOverObject(authentication, targetDomainObject, targetType, permisoName);
     }
 
     @Override
-    public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
-        String permisoName = (permission instanceof String) ? (String) permission : null;
+    public boolean hasPermission(Authentication authentication,
+                                 Serializable targetId,
+                                 String targetType,
+                                 Object permission) {
+        if (permission == null) return false;
+        String permisoName = permission.toString();
+
         return authorizationService.hasPermission(authentication, targetId, targetType, permisoName);
     }
 }

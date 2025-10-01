@@ -4,9 +4,7 @@ import com.scabrera.cursospring.dto.ArticuloListResponseDTO;
 import com.scabrera.cursospring.models.Articulo;
 import com.scabrera.cursospring.models.Usuario;
 import com.scabrera.cursospring.repository.ArticuloRepository;
-import com.scabrera.cursospring.security.AuthorizationService;
 import com.scabrera.cursospring.security.CurrentUserService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,15 +15,11 @@ public class ArticuloService {
     private final ArticuloRepository articuloRepo;
     private final UsuarioService usuarioService;
     private final CurrentUserService currentUserService;
-    private final AuthorizationService authorizationService;
-    private final PermisoService permisoService;
 
-    public ArticuloService(ArticuloRepository articuloRepo, UsuarioService usuarioService, CurrentUserService currentUserService, AuthorizationService authorizationService, PermisoService permisoService) {
+    public ArticuloService(ArticuloRepository articuloRepo, UsuarioService usuarioService, CurrentUserService currentUserService) {
         this.articuloRepo = articuloRepo;
         this.usuarioService = usuarioService;
         this.currentUserService = currentUserService;
-        this.authorizationService = authorizationService;
-        this.permisoService = permisoService;
     }
 
     public List<ArticuloListResponseDTO> traerArticulos() {
@@ -45,7 +39,6 @@ public class ArticuloService {
         return articuloRepo.save(articulo);
     }
 
-    @PreAuthorize("hasPermission(#id, 'Articulo', 'ARTICULO_DELETE')")
     public Articulo eliminarArticulo(Long id) {
         Articulo articulo = buscarId(id);
         articuloRepo.deleteById(id);
