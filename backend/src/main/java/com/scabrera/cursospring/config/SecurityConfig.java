@@ -4,6 +4,7 @@ import com.scabrera.cursospring.models.Token;
 import com.scabrera.cursospring.models.Usuario;
 import com.scabrera.cursospring.repository.TokenRepository;
 import com.scabrera.cursospring.repository.UsuarioRepository;
+import com.scabrera.cursospring.security.JwtAuthFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

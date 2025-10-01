@@ -1,4 +1,4 @@
-package com.scabrera.cursospring.service;
+package com.scabrera.cursospring.security;
 
 import com.scabrera.cursospring.models.Usuario;
 import io.jsonwebtoken.Claims;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -74,4 +73,13 @@ public class JwtService {
                 .getBody();
         return jwtToken.getExpiration();
     }
+
+    public Claims extractAllClaims(final String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
 }

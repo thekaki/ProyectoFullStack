@@ -3,7 +3,7 @@ package com.scabrera.cursospring.controllers;
 import com.scabrera.cursospring.dto.LoginRequestDTO;
 import com.scabrera.cursospring.dto.RegisterRequestDTO;
 import com.scabrera.cursospring.dto.TokenResponseDTO;
-import com.scabrera.cursospring.service.AuthService;
+import com.scabrera.cursospring.security.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;

@@ -3,7 +3,9 @@ package com.scabrera.cursospring.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuarios")
@@ -28,4 +30,12 @@ public class Usuario {
 
     @OneToMany(mappedBy = "propietario", fetch = FetchType.LAZY)
     private List<Articulo> articulos;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "usuario_rol",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "rol_id")
+    )
+    private Set<Rol> roles = new HashSet<>();
 }
