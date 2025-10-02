@@ -55,15 +55,6 @@ public class ArticuloController {
 
     }
 
-    @PostMapping("/libre")
-    public ResponseEntity<ApiResponseDTO<ArticuloDetailResponseDTO>> crearArticuloLibre(@Valid @RequestBody ArticuloRequestDTO articuloRequestDTO){
-        Articulo articulo = articuloMapper.toEntity(articuloRequestDTO);
-        Articulo articuloCreado = articuloService.crearArticulo(articulo);
-        ArticuloDetailResponseDTO respuesta = articuloMapper.toDetailDTO(articuloCreado);
-        return ResponseEntity.ok(ApiResponseDTO.success(respuesta, "Artículo creado con éxito"));
-
-    }
-
     @DeleteMapping("/{id}")
     @PreAuthorize("hasPermission(#id, 'Articulo', 'ARTICULO_DELETE')")
     public ResponseEntity<ApiResponseDTO<ArticuloDetailResponseDTO>> eliminarArticulo(@PathVariable Long id) {

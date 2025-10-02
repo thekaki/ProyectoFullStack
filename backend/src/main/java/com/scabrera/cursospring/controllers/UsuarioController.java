@@ -1,9 +1,6 @@
 package com.scabrera.cursospring.controllers;
 
-import com.scabrera.cursospring.dto.ApiResponseDTO;
-import com.scabrera.cursospring.dto.ArticuloListResponseDTO;
-import com.scabrera.cursospring.dto.UsuarioRequestDTO;
-import com.scabrera.cursospring.dto.UsuarioResponseDTO;
+import com.scabrera.cursospring.dto.*;
 import com.scabrera.cursospring.mapper.UsuarioMapper;
 import com.scabrera.cursospring.models.Usuario;
 import com.scabrera.cursospring.service.ArticuloService;
@@ -57,6 +54,12 @@ public class UsuarioController {
     public ResponseEntity<ApiResponseDTO<List<ArticuloListResponseDTO>>> buscarArticulosPorPropietario(@PathVariable Long id) {
         List<ArticuloListResponseDTO> listaArticulos = articuloService.buscarArticulosPorPropietario(id);
         return ResponseEntity.ok(ApiResponseDTO.success(listaArticulos, "Artículos encontrados con éxito"));
+    }
+
+    @GetMapping("/usuarios/{id}/permisos")
+    public ResponseEntity<ApiResponseDTO<UsuarioPermisosDTO>> obtenerPermisosUsuario(@PathVariable Long id) {
+        UsuarioPermisosDTO respuesta = usuarioService.obtenerPermisosUsuario(id);
+        return ResponseEntity.ok(ApiResponseDTO.success(respuesta, "Usuario encontrado con éxito"));
     }
 
     @GetMapping("usuarios/me")

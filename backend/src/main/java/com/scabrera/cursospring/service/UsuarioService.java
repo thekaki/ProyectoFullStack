@@ -1,8 +1,11 @@
 package com.scabrera.cursospring.service;
 
+import com.scabrera.cursospring.dto.RolDTO;
+import com.scabrera.cursospring.dto.UsuarioPermisosDTO;
 import com.scabrera.cursospring.dto.UsuarioRequestDTO;
 import com.scabrera.cursospring.dto.UsuarioResponseDTO;
 import com.scabrera.cursospring.mapper.UsuarioMapper;
+import com.scabrera.cursospring.models.Permiso;
 import com.scabrera.cursospring.models.Usuario;
 import com.scabrera.cursospring.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -66,6 +69,32 @@ public class UsuarioService {
         }
         Usuario guardado = usuarioRepository.save(existente);
         return usuarioMapper.toDTO(guardado);
+    }
+
+    public UsuarioPermisosDTO obtenerPermisosUsuario(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        List<RolDTO> rolesDTO = usuario.getRoles().stream()
+                .map(rol -> new RolDTO(
+                        rol.getId(),
+                        rol.getNombre(),
+                        rol.getPermisos().stream()
+                                .map(Permiso::getNombre)
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
+
+        UsuarioPermisosDTO respuesta = new UsuarioPermisosDTO(
+                usuario.getId(),
+                usuario.getNombre(),
+                usuario.getApellido(),
+                usuario.getEmail(),
+                usuario.getTelefono(),
+                rolesDTO
+        );
+
+        return respuesta;
     }
 
     // ======= Métodos internos (devuelven entidades) =======
