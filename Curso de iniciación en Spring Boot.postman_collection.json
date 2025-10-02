@@ -1,0 +1,1037 @@
+{
+	"info": {
+		"_postman_id": "f1fd53cb-3a1a-4096-ae38-e40a0dc2f3a4",
+		"name": "Curso de iniciación en Spring Boot",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43567583",
+		"_collection_link": "https://samuel-6692562.postman.co/workspace/restfulApi~69cc5836-6fd4-4db8-8ad3-dfe2e75f9bc6/collection/43567583-f1fd53cb-3a1a-4096-ae38-e40a0dc2f3a4?action=share&source=collection_link&creator=43567583"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "User Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.globals.set(\"tokenJwt\", response.access_token);\r",
+									"    pm.globals.set(\"RefreshTokenJwt\", response.refresh_token);\r",
+									"} else {\r",
+									"    console.warn(\"Request failed with status code:\", pm.response.code);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@soporteblog.com\",\r\n    \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BasePath}}/auth/login",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Admin Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"admin@soporteblog.com\",\r\n    \"password\": \"admin\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BasePath}}/auth/login",
+									"host": [
+										"{{BasePath}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "",
+							"header": [],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": ""
+						},
+						{
+							"name": "Samuel Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"samuelcabrerarincon@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BasePath}}/auth/login",
+									"host": [
+										"{{BasePath}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "",
+							"header": [],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": ""
+						},
+						{
+							"name": "Skrillex Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"skrillex@owsla.com\",\r\n    \"password\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BasePath}}/auth/login",
+									"host": [
+										"{{BasePath}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "User Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.globals.set(\"tokenJwt\", response.accessToken);\r",
+									"} else {\r",
+									"    console.warn(\"Request failed with status code:\", pm.response.code);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"paco\",\r\n    \"email\": \"paco@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BasePath}}/auth/register",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.globals.set(\"tokenJwt\", response.access_token);\r",
+									"} else {\r",
+									"    console.warn(\"Request failed with status code:\", pm.response.code);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{RefreshTokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/auth/refresh",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/auth/logout",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Traer todos los Usuarios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/usuarios",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Usuario {Id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{BasePath}}/api/usuarios/21",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Permisos Usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/usuarios/26/permisos",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"26",
+								"permisos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"\",\r\n    \"apellido\": \"\",\r\n    \"email\": \"\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BasePath}}/api/usuarios",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar Usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"prueba\",\r\n    \"apellido\": \"prueba\",\r\n    \"email\": \"prueba@probada.com\",\r\n    \"telefono\": \"prueba\",\r\n    \"password\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BasePath}}/api/usuario/1",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"usuario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/usuario/7",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"usuario",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Mi Usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/usuarios/me",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Articulos",
+			"item": [
+				{
+					"name": "traer todos los Articulos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/articulos",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"articulos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Articulo {id}",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/articulos/42",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"42"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Articulo Por Nombre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/articulos/buscar?titulo=metsu",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"buscar"
+							],
+							"query": [
+								{
+									"key": "titulo",
+									"value": "metsu"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Articulos por Propietario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/usuarios/20/articulos",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"20",
+								"articulos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Articulo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"titulo\": \"\",\r\n    \"descripcion\": \"\",\r\n    \"contenido\": \"\",\r\n    \"imagen\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BasePath}}/api/articulos",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"articulos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Articulo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/articulos/44",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"44"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Permisos",
+			"item": [
+				{
+					"name": "Traer todos los permisos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/permisos",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"permisos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Permiso",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"ARTICULO_CREATE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BasePath}}/api/permisos",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"permisos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Permiso Por Nombre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/permisos/buscar?nombre=",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"permisos",
+								"buscar"
+							],
+							"query": [
+								{
+									"key": "nombre",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comentarios",
+			"item": [
+				{
+					"name": "Obtener Comentarios por Articulo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/articulos/1/comentarios",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"1",
+								"comentarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Comentario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contenido\": \"Esto es una prueba de comentario\",\r\n    \"comentarioPadreId\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BasePath}}/api/articulos/1/comentarios",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"1",
+								"comentarios"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Likes",
+			"item": [
+				{
+					"name": "Dar Like",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/articulos/1/likes?usuarioId=21",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"1",
+								"likes"
+							],
+							"query": [
+								{
+									"key": "usuarioId",
+									"value": "21"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar Like",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/articulos/2/likes",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"2",
+								"likes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Like de Usuario en Articulo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/articulos/2/likes/buscar?usuarioId=21",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"2",
+								"likes",
+								"buscar"
+							],
+							"query": [
+								{
+									"key": "usuarioId",
+									"value": "21"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Likes en Articulo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenJwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BasePath}}/api/articulos/2/likes",
+							"host": [
+								"{{BasePath}}"
+							],
+							"path": [
+								"api",
+								"articulos",
+								"2",
+								"likes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
