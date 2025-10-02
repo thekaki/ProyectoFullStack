@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name = "articulos")
 @Data
@@ -30,6 +33,12 @@ public class Articulo implements Ownable {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Usuario propietario;
+
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comentario> comentarios;
+
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<LikeArticulo> likes;
 
     @Override
     public Long getOwnerId() {
