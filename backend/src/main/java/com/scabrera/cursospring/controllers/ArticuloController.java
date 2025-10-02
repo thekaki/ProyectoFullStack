@@ -9,6 +9,7 @@ import com.scabrera.cursospring.models.Articulo;
 import com.scabrera.cursospring.service.ArticuloService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,6 +46,7 @@ public class ArticuloController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasPermission(null, 'ARTICULO_CREATE')")
     public ResponseEntity<ApiResponseDTO<ArticuloDetailResponseDTO>> crearArticulo(@Valid @RequestBody ArticuloRequestDTO articuloRequestDTO){
         Articulo articulo = articuloMapper.toEntity(articuloRequestDTO);
         Articulo articuloCreado = articuloService.crearArticulo(articulo);
@@ -54,6 +56,7 @@ public class ArticuloController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasPermission(#id, 'Articulo', 'ARTICULO_DELETE')")
     public ResponseEntity<ApiResponseDTO<ArticuloDetailResponseDTO>> eliminarArticulo(@PathVariable Long id) {
         Articulo articuloEliminado = articuloService.eliminarArticulo(id);
         ArticuloDetailResponseDTO articuloEliniadoDTO = articuloMapper.toDetailDTO(articuloEliminado);
